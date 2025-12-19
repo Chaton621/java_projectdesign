@@ -1,0 +1,332 @@
+/* 全局样式 */
+.root {
+    -fx-font-family: "Microsoft YaHei", "微软雅黑", "Arial", sans-serif;
+    -fx-font-size: 14px;
+}
+
+/* 登录界面样式 */
+.login-container {
+    -fx-background-color: linear-gradient(to bottom, #667eea 0%, #764ba2 100%);
+    -fx-background-size: cover;
+    -fx-background-position: center;
+}
+
+.login-panel {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-background-radius: 15px;
+    -fx-padding: 40px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+.login-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #667eea;
+    -fx-padding: 0 0 20 0;
+}
+
+.login-form {
+    -fx-spacing: 15px;
+}
+
+.login-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+}
+
+.login-field {
+    -fx-pref-width: 280px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.login-field:focused {
+    -fx-border-color: #667eea;
+    -fx-border-width: 2px;
+}
+
+.login-button {
+    -fx-pref-width: 130px;
+    -fx-pref-height: 45px;
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.login-button:hover {
+    -fx-background-color: #5568d3;
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 126, 234, 0.4), 8, 0, 0, 0);
+}
+
+.login-button:pressed {
+    -fx-background-color: #4a5bc4;
+}
+
+.register-button {
+    -fx-pref-width: 130px;
+    -fx-pref-height: 45px;
+    -fx-background-color: #764ba2;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.register-button:hover {
+    -fx-background-color: #6a3f8f;
+    -fx-effect: dropshadow(three-pass-box, rgba(118, 75, 162, 0.4), 8, 0, 0, 0);
+}
+
+.status-label {
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 12px;
+    -fx-padding: 5px;
+}
+
+/* 主界面样式 */
+.main-container {
+    -fx-background-color: rgba(245, 247, 250, 0.3);
+    -fx-background-radius: 0;
+}
+
+.top-bar {
+    -fx-background-color: rgba(102, 126, 234, 0.6);
+    -fx-background-radius: 0;
+    -fx-padding: 15px 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 0);
+}
+
+.top-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.top-user-info {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.logout-button {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-text-fill: white;
+    -fx-padding: 8px 20px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.logout-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* 标签页样式 */
+.tab-pane {
+    -fx-tab-min-width: 120px;
+    -fx-tab-min-height: 40px;
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+}
+
+.tab {
+    -fx-background-color: rgba(224, 224, 224, 0.5);
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.tab:selected {
+    -fx-background-color: rgba(102, 126, 234, 0.7);
+    -fx-text-fill: white;
+}
+
+.tab:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+.tab:selected:hover {
+    -fx-background-color: #5568d3;
+}
+
+/* 按钮样式 */
+.action-button {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.action-button:hover {
+    -fx-background-color: #5568d3;
+    -fx-effect: dropshadow(three-pass-box, rgba(102, 126, 234, 0.4), 6, 0, 0, 0);
+}
+
+.action-button:pressed {
+    -fx-background-color: #4a5bc4;
+}
+
+.danger-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+.danger-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.success-button {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+}
+
+.success-button:hover {
+    -fx-background-color: #229954;
+}
+
+/* 表格样式 */
+.table-view {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-border-color: rgba(221, 221, 221, 0.5);
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.table-view .column-header {
+    -fx-background-color: rgba(102, 126, 234, 0.7);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
+
+/* 表格行 - 有内容时保持高不透明度，确保内容清晰可读 */
+.table-view .table-row-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-border-color: rgba(240, 240, 240, 0.6);
+    -fx-border-width: 0 0 1 0;
+}
+
+/* 表格行填充区域（无内容时） - 更透明，让背景视频可见 */
+.table-view .table-row-cell:filler {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: rgba(227, 232, 255, 0.98);
+    -fx-text-fill: #333;
+}
+
+.table-view .table-row-cell:hover {
+    -fx-background-color: rgba(245, 247, 250, 0.98);
+}
+
+/* 表格单元格 - 确保文字清晰 */
+.table-view .table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333;
+    -fx-font-weight: normal;
+}
+
+.table-view .table-row-cell:selected .table-cell {
+    -fx-text-fill: #333;
+    -fx-font-weight: normal;
+}
+
+/* 表格虚拟流区域 - 更透明 */
+.table-view .virtual-flow .clipped-container .sheet .table-row-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* 输入框样式 */
+.text-field, .text-area {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-border-color: rgba(221, 221, 221, 0.8);
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #667eea;
+    -fx-border-width: 2px;
+}
+
+/* 状态栏样式 */
+.status-bar {
+    -fx-background-color: rgba(236, 240, 241, 0.5);
+    -fx-padding: 8px 15px;
+    -fx-border-color: rgba(221, 221, 221, 0.4);
+    -fx-border-width: 1px 0 0 0;
+}
+
+.status-label-info {
+    -fx-text-fill: #3498db;
+    -fx-font-size: 12px;
+}
+
+/* 卡片样式 */
+.card {
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-background-radius: 8px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);
+}
+
+/* 搜索框样式 */
+.search-box {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-border-color: rgba(221, 221, 221, 0.7);
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-padding: 10px 20px;
+    -fx-font-size: 14px;
+}
+
+.search-box:focused {
+    -fx-border-color: #667eea;
+    -fx-border-width: 2px;
+}
+
+/* 推荐卡片样式 */
+.recommend-card {
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 0);
+    -fx-border-color: rgba(102, 126, 234, 0.8);
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+}
+
+.recommend-score {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #667eea;
+}
+
+.recommend-reason {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666;
+    -fx-wrap-text: true;
+}
+
+
+
+
+
+
+
+
+
