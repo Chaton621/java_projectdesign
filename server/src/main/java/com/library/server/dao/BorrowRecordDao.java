@@ -11,7 +11,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 借阅记录数据访问对象
@@ -387,7 +390,93 @@ public class BorrowRecordDao extends BaseDao {
             close(conn, stmt, rs);
         }
     }
+    
+    /**
+     * 获取图书的借阅次数
+     */
+    public int getBorrowCountByBookId(Long bookId) {
+        String sql = "SELECT COUNT(*) FROM borrow_records WHERE book_id = ?";
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, bookId);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            logger.error("获取图书借阅次数失败: bookId={}", bookId, e);
+            return 0;
+        } finally {
+            close(conn, stmt, rs);
+        }
+    }
+    
+    /**
+     * 批量获取图书的借阅次数
+     */
+    public Map<Long, Integer> getBorrowCountsByBookIds(List<Long> bookIds) {
+        Map<Long, Integer> result = new HashMap<>();
+        if (bookIds == null || bookIds.isEmpty()) {
+            return result;
+        }
+        
+        String placeholders = String.join(",", Collections.nCopies(bookIds.size(), "?"));
+        String sql = String.format(
+            "SELECT book_id, COUNT(*) as borrow_count " +
+            "FROM borrow_records " +
+            "WHERE book_id IN (%s) " +
+            "GROUP BY book_id",
+            placeholders
+        );
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = getConnection();
+            stmt = conn.prepareStatement(sql);
+            for (int i = 0; i < bookIds.size(); i++) {
+                stmt.setLong(i + 1, bookIds.get(i));
+            }
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Long bookId = rs.getLong("book_id");
+                int count = rs.getInt("borrow_count");
+                result.put(bookId, count);
+            }
+            
+            // 为没有借阅记录的图书设置0
+            for (Long bookId : bookIds) {
+                if (!result.containsKey(bookId)) {
+                    result.put(bookId, 0);
+                }
+            }
+            
+            return result;
+        } catch (SQLException e) {
+            logger.error("批量获取图书借阅次数失败", e);
+            // 返回默认值0
+            for (Long bookId : bookIds) {
+                result.put(bookId, 0);
+            }
+            return result;
+        } finally {
+            close(conn, stmt, rs);
+        }
+    }
 }
+
+
 
 
 

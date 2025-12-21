@@ -21,7 +21,6 @@ public class RequestDispatcher {
     private final TokenService tokenService;
     private final Map<OpCode, Function<Request, Response>> handlers;
     
-    // Service实例
     private final UserService userService;
     private final BookService bookService;
     private final TrendingService trendingService;
@@ -53,22 +52,15 @@ public class RequestDispatcher {
      * 注册所有处理器
      */
     private void registerHandlers() {
-        // 用户相关（无需token）
         handlers.put(OpCode.REGISTER, this::handleRegister);
         handlers.put(OpCode.LOGIN, this::handleLogin);
-        
-        // 图书查询（无需token）
         handlers.put(OpCode.SEARCH_BOOK, this::handleSearchBook);
         handlers.put(OpCode.TRENDING, this::handleTrending);
-        
-        // 需要token的操作
         handlers.put(OpCode.BORROW_BOOK, this::handleBorrowBook);
         handlers.put(OpCode.RETURN_BOOK, this::handleReturnBook);
         handlers.put(OpCode.MY_RECORDS, this::handleMyRecords);
         handlers.put(OpCode.RECOMMEND, this::handleRecommend);
         handlers.put(OpCode.GET_USER_FINE, this::handleGetUserFine);
-        
-        // 管理员操作（需要ADMIN角色）
         handlers.put(OpCode.ADMIN_ADD_BOOK, this::handleAdminAddBook);
         handlers.put(OpCode.ADMIN_UPDATE_BOOK, this::handleAdminUpdateBook);
         handlers.put(OpCode.ADMIN_DELETE_BOOK, this::handleAdminDeleteBook);
@@ -84,8 +76,6 @@ public class RequestDispatcher {
         handlers.put(OpCode.ADMIN_ADD_FINE_RATE_CONFIG, this::handleAdminAddFineRateConfig);
         handlers.put(OpCode.ADMIN_DELETE_FINE_RATE_CONFIG, this::handleAdminDeleteFineRateConfig);
         handlers.put(OpCode.ADMIN_STATISTICS, this::handleAdminStatistics);
-        
-        // 聊天相关（需要token）
         handlers.put(OpCode.SEND_MESSAGE, this::handleSendMessage);
         handlers.put(OpCode.GET_CONVERSATION, this::handleGetConversation);
         handlers.put(OpCode.GET_RECENT_CONVERSATIONS, this::handleGetRecentConversations);
@@ -137,8 +127,6 @@ public class RequestDispatcher {
             return tokenService.validateToken(token) != null;
         }
     }
-    
-    // ========== 处理器方法 ==========
     
     private Response handleRegister(Request request) {
         logger.info("处理注册请求: requestId={}", request.getRequestId());
@@ -237,7 +225,6 @@ public class RequestDispatcher {
             return Response.error(request.getRequestId(), ErrorCode.FORBIDDEN);
         }
         logger.info("处理管理员导入图书请求: requestId={}", request.getRequestId());
-        // TODO: 实现批量导入功能
         return Response.error(request.getRequestId(), ErrorCode.SERVER_ERROR, "NOT_IMPLEMENTED");
     }
     

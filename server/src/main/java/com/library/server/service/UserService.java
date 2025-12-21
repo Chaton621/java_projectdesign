@@ -34,22 +34,19 @@ public class UserService {
         try {
             String username = request.getPayloadString("username");
             String password = request.getPayloadString("password");
-            String role = request.getPayloadString("role");  // 可选，默认为USER
+            String role = request.getPayloadString("role");
             
-            // 参数验证
             if (username == null || username.trim().isEmpty() || 
                 password == null || password.isEmpty()) {
                 return Response.error(requestId, ErrorCode.VALIDATION_ERROR, 
                         JsonUtil.toJsonNode("用户名和密码不能为空"));
             }
             
-            // 检查用户名是否已存在
             if (userDao.findByUsername(username) != null) {
                 return Response.error(requestId, ErrorCode.ALREADY_EXISTS, 
                         JsonUtil.toJsonNode("用户名已存在"));
             }
             
-            // 创建用户
             String passwordHash = PasswordUtil.hashPassword(password);
             User user = new User(username, passwordHash, 
                     role != null ? role : "USER", "ACTIVE");
@@ -78,13 +75,11 @@ public class UserService {
             String username = request.getPayloadString("username");
             String password = request.getPayloadString("password");
             
-            // 参数验证
             if (username == null || password == null) {
                 return Response.error(requestId, ErrorCode.VALIDATION_ERROR, 
                         JsonUtil.toJsonNode("用户名和密码不能为空"));
             }
             
-            // 查找用户
             User user = userDao.findByUsername(username);
             if (user == null) {
                 return Response.error(requestId, ErrorCode.AUTH_FAILED, 
@@ -246,6 +241,8 @@ public class UserService {
         }
     }
 }
+
+
 
 
 

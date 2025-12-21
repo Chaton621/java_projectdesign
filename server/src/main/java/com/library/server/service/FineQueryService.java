@@ -33,24 +33,36 @@ public class FineQueryService {
                     JsonUtil.toJsonNode("用户不存在"));
             }
             
-            double totalFine = user.getFineAmount();
+            // 安全地获取欠费金额，避免null
+            Double fineAmount = user.getFineAmount();
+            double totalFine = fineAmount != null ? fineAmount : 0.0;
+            
             List<BorrowRecord> overdueRecords = recordDao.findOverdueRecordsByUserId(userId);
             
             double currentOverdueFine = 0.0;
             ArrayNode overdueArray = JsonUtil.getObjectMapper().createArrayNode();
             
             for (BorrowRecord record : overdueRecords) {
-                long overdueDays = FineService.calculateOverdueDays(record.getDueTime());
-                double fine = FineService.calculateFine(overdueDays);
-                currentOverdueFine += fine;
-                
-                ObjectNode recordNode = JsonUtil.createObjectNode();
-                recordNode.put("recordId", record.getId());
-                recordNode.put("bookId", record.getBookId());
-                recordNode.put("overdueDays", overdueDays);
-                recordNode.put("fineAmount", fine);
-                recordNode.put("dueTime", record.getDueTime().toString());
-                overdueArray.add(recordNode);
+                try {
+                    if (record.getDueTime() == null) {
+                        logger.warn("借阅记录dueTime为null: recordId={}", record.getId());
+                        continue;
+                    }
+                    long overdueDays = FineService.calculateOverdueDays(record.getDueTime());
+                    double fine = FineService.calculateFine(overdueDays);
+                    currentOverdueFine += fine;
+                    
+                    ObjectNode recordNode = JsonUtil.createObjectNode();
+                    recordNode.put("recordId", record.getId());
+                    recordNode.put("bookId", record.getBookId());
+                    recordNode.put("overdueDays", overdueDays);
+                    recordNode.put("fineAmount", fine);
+                    recordNode.put("dueTime", record.getDueTime().toString());
+                    overdueArray.add(recordNode);
+                } catch (Exception e) {
+                    logger.warn("计算逾期罚款失败: recordId={}", record.getId(), e);
+                    // 继续处理下一条记录
+                }
             }
             
             ObjectNode data = JsonUtil.createObjectNode();
@@ -182,6 +194,8 @@ public class FineQueryService {
         }
     }
 }
+
+
 
 
 

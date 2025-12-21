@@ -53,11 +53,11 @@ public class LoginView {
                 );
                 root.setBackground(new Background(backgroundImage));
             } else {
-                // 如果没有图片，使用渐变背景
+                // 使用渐变背景
                 root.setStyle("-fx-background-color: linear-gradient(to bottom, #667eea 0%, #764ba2 100%);");
             }
         } catch (Exception e) {
-            // 如果加载失败，使用渐变背景
+            // 加载失败时使用渐变背景
             root.setStyle("-fx-background-color: linear-gradient(to bottom, #667eea 0%, #764ba2 100%);");
         }
         

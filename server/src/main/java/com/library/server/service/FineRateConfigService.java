@@ -95,7 +95,7 @@ public class FineRateConfigService {
                     JsonUtil.toJsonNode("配置不存在"));
             }
             
-            // 检查唯一性约束：如果修改了day_range_start或day_range_end，需要检查是否与其他记录冲突
+            // 检查唯一性约束
             boolean rangeChanged = !dayRangeStart.equals(config.getDayRangeStart()) ||
                     (dayRangeEnd == null && config.getDayRangeEnd() != null) ||
                     (dayRangeEnd != null && !dayRangeEnd.equals(config.getDayRangeEnd()));
@@ -236,6 +236,8 @@ public class FineRateConfigService {
         }
     }
 }
+
+
 
 
 

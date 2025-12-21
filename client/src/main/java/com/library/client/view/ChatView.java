@@ -628,3 +628,5 @@ public class ChatView {
         }
     }
 }
+
+

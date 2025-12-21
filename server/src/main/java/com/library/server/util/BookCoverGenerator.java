@@ -162,8 +162,8 @@ public class BookCoverGenerator {
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(title);
         
-        // 如果书名太长，需要换行
-        int maxWidth = width - 40; // 左右各留20像素边距
+        // 书名过长时换行
+        int maxWidth = width - 40;
         if (textWidth > maxWidth) {
             // 分行显示
             String[] words = title.split("");
@@ -237,6 +237,8 @@ public class BookCoverGenerator {
         }
     }
 }
+
+
 
 
 

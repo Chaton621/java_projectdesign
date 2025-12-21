@@ -149,7 +149,7 @@ public class SemanticRecallService {
         }
         
         if (embeddings.isEmpty()) {
-            // 如果这些书都没有embedding，使用热门书
+            // 无embedding时使用热门书
             logger.info("用户借阅的书没有embedding，使用热门书构建画像");
             return buildProfileFromTrendingBooks(k);
         }
@@ -162,7 +162,6 @@ public class SemanticRecallService {
      * 从热门书构建画像向量
      */
     private float[] buildProfileFromTrendingBooks(int k) {
-        // 获取热门图书（简化实现，实际可以使用TrendingService）
         List<Book> trendingBooks = bookDao.searchBooks(null, null, k, 0);
         
         List<float[]> embeddings = new ArrayList<>();

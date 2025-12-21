@@ -17,12 +17,10 @@ public class ServerMain {
     private static final int DEFAULT_THREAD_POOL_SIZE = 20;
     
     public static void main(String[] args) {
-        // 从配置文件读取默认值
         Properties props = loadProperties();
         int port = Integer.parseInt(props.getProperty("server.port", String.valueOf(DEFAULT_PORT)));
         int threadPoolSize = Integer.parseInt(props.getProperty("server.threadPoolSize", String.valueOf(DEFAULT_THREAD_POOL_SIZE)));
         
-        // 命令行参数优先级更高
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         }
@@ -30,10 +28,7 @@ public class ServerMain {
             threadPoolSize = Integer.parseInt(args[1]);
         }
         
-        // 初始化管理员账户
         AdminInitializer.initialize();
-        
-        // 初始化欠费价格梯度配置
         FineRateConfigInitializer.initialize();
         
         SocketServer server = new SocketServer(port, threadPoolSize);

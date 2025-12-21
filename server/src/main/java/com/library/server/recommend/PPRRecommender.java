@@ -182,7 +182,7 @@ public class PPRRecommender {
         GraphNode userNode = graph.getNode(userIdStr);
         if (userNode == null) return;
         
-        // 查找用户借阅的图书（这些图书可能连接到目标图书）
+        // 查找用户借阅的图书
         for (String neighborId : userNode.getEdges().keySet()) {
             if (neighborId.startsWith("book:")) {
                 try {
@@ -230,7 +230,7 @@ public class PPRRecommender {
             }
         }
         
-        // 如果还没有路径，添加一个通用路径
+        // 无路径时添加通用路径
         if (explanation.getPaths().isEmpty()) {
             RecommendationExplanation.ExplanationPath path = 
                 new RecommendationExplanation.ExplanationPath(

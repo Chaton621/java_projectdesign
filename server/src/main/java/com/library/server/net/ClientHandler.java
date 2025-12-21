@@ -40,20 +40,17 @@ public class ClientHandler {
         logger.info("开始处理客户端连接: {}", clientAddr);
         
         try {
-            // 创建输入输出流
             reader = new BufferedReader(new InputStreamReader(
                 clientSocket.getInputStream(), "UTF-8"));
             writer = new PrintWriter(clientSocket.getOutputStream(), true);
             
-            // 持续读取请求
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) {
-                    continue;  // 跳过空行
+                    continue;
                 }
                 
                 try {
-                    // 解析请求
                     Request request = JsonUtil.decode(line, Request.class);
                     if (request == null) {
                         logger.warn("无法解析请求: {}", line.length() > 100 ? 
@@ -64,10 +61,8 @@ public class ClientHandler {
                     logger.debug("收到请求: requestId={}, opCode={}", 
                         request.getRequestId(), request.getOpCode());
                     
-                    // 处理请求
                     Response response = dispatcher.dispatch(request);
                     
-                    // 发送响应
                     String responseJson = JsonUtil.encode(response);
                     writer.println(responseJson);
                     writer.flush();
@@ -79,7 +74,6 @@ public class ClientHandler {
                     logger.error("处理请求异常: {}", line.length() > 100 ? 
                         line.substring(0, 100) : line, e);
                     
-                    // 发送错误响应
                     try {
                         Response errorResponse = Response.error(
                             "unknown", 

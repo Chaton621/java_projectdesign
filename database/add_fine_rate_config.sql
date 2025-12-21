@@ -40,3 +40,5 @@ CREATE TRIGGER trigger_update_fine_rate_config_updated_at
 
 
 
+
+

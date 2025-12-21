@@ -12,3 +12,5 @@ CREATE INDEX IF NOT EXISTS idx_users_fine_amount ON users(fine_amount) WHERE fin
 
 
 
+
+

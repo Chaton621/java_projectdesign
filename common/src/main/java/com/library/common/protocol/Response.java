@@ -26,9 +26,9 @@ public class Response {
     private String message;  // 错误消息（成功时为null或"操作成功"）
     
     @JsonProperty("data")
-    private JsonNode data;  // 响应数据，JSON格式
+    private JsonNode data;
     
-    // 默认构造函数（Jackson需要）
+    // 默认构造函数（Jackson反序列化需要）
     public Response() {
     }
     

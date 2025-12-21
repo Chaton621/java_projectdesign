@@ -85,8 +85,6 @@ public class OverdueScheduler {
         try {
             conn = DataSourceProvider.getDataSource().getConnection();
             conn.setAutoCommit(false);
-            
-            // 先统计需要更新的记录数
             countStmt = conn.prepareStatement(
                 "SELECT COUNT(*) FROM borrow_records " +
                 "WHERE status = 'BORROWED' " +

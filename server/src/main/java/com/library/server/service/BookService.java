@@ -132,7 +132,6 @@ public class BookService {
                 return Response.error(requestId, ErrorCode.NOT_FOUND, "图书不存在");
             }
             
-            // 更新字段（如果提供）
             if (request.getPayloadString("isbn") != null) {
                 existingBook.setIsbn(request.getPayloadString("isbn"));
             }

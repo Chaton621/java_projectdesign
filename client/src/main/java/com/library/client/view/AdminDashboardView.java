@@ -173,34 +173,48 @@ public class AdminDashboardView {
 
         VBox categoryChartBox = new VBox(10);
         categoryChartBox.setAlignment(Pos.CENTER);
+        categoryChartBox.setPadding(new Insets(15));
+        categoryChartBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.95); " +
+                                 "-fx-background-radius: 15; " +
+                                 "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);");
         Label categoryTitle = new Label("图书分类分布");
-        categoryTitle.setFont(Font.font("Microsoft YaHei", FontWeight.BOLD, 16));
-        categoryTitle.setTextFill(Color.WHITE);
+        categoryTitle.setFont(Font.font("Microsoft YaHei", FontWeight.BOLD, 18));
+        categoryTitle.setTextFill(Color.web("#2c3e50"));
         categoryChart = new PieChart();
         categoryChart.setPrefSize(400, 300);
-        categoryChart.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
+        categoryChart.setStyle("-fx-background-color: rgba(255, 255, 255, 1.0); " +
+                             "-fx-background-radius: 10;");
+        categoryChart.setLabelLineLength(10);
+        categoryChart.setStartAngle(90);
         categoryChartBox.getChildren().addAll(categoryTitle, categoryChart);
 
         VBox trendChartBox = new VBox(10);
         trendChartBox.setAlignment(Pos.CENTER);
+        trendChartBox.setPadding(new Insets(15));
+        trendChartBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.95); " +
+                              "-fx-background-radius: 15; " +
+                              "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);");
         Label trendTitle = new Label("借阅趋势（最近7天）");
-        trendTitle.setFont(Font.font("Microsoft YaHei", FontWeight.BOLD, 16));
-        trendTitle.setTextFill(Color.WHITE);
+        trendTitle.setFont(Font.font("Microsoft YaHei", FontWeight.BOLD, 18));
+        trendTitle.setTextFill(Color.web("#2c3e50"));
 
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("借阅数量");
         yAxis.setAutoRanging(true);
-        yAxis.setTickLabelFont(Font.font("Microsoft YaHei", 10));
+        yAxis.setTickLabelFont(Font.font("Microsoft YaHei", 11));
+        yAxis.setTickLabelFill(Color.web("#34495e"));
         
         javafx.scene.chart.CategoryAxis xAxis = new javafx.scene.chart.CategoryAxis();
         xAxis.setLabel("日期");
-        xAxis.setTickLabelFont(Font.font("Microsoft YaHei", 10));
+        xAxis.setTickLabelFont(Font.font("Microsoft YaHei", 11));
+        xAxis.setTickLabelFill(Color.web("#34495e"));
         xAxis.setTickLabelRotation(-45);  // 旋转标签45度，避免拥挤
         xAxis.setAnimated(false);  // 禁用动画，提高性能
 
         trendChart = new LineChart<>(xAxis, yAxis);
         trendChart.setPrefSize(600, 300);
-        trendChart.setStyle("-fx-background-color: rgba(255, 255, 255, 0.9);");
+        trendChart.setStyle("-fx-background-color: rgba(255, 255, 255, 1.0); " +
+                           "-fx-background-radius: 10;");
         trendChart.setTitle("");
         trendChart.setAnimated(false);  // 禁用动画
         trendChart.setLegendVisible(false);  // 隐藏图例（只有一个系列）
@@ -474,7 +488,7 @@ public class AdminDashboardView {
                                         }
                                     });
                                     
-                                    // 如果节点已经存在，立即安装Tooltip
+                                    // 节点存在时安装Tooltip
                                     javafx.scene.Node node = pieDataItem.getNode();
                                     if (node != null) {
                                         Tooltip.install(node, tooltip);
@@ -542,7 +556,7 @@ public class AdminDashboardView {
                                         }
                                     });
                                     
-                                    // 如果节点已经存在，立即安装Tooltip
+                                    // 节点存在时安装Tooltip
                                     javafx.scene.Node node = dataPoint.getNode();
                                     if (node != null) {
                                         Tooltip.install(node, tooltip);
@@ -559,7 +573,7 @@ public class AdminDashboardView {
                             // 为线条上的每个点也添加Tooltip（通过监听整个系列）
                             series.nodeProperty().addListener((obs, oldNode, newNode) -> {
                                 if (newNode != null) {
-                                    // 线条节点已创建，可以添加额外的交互
+                                    // 线条节点已创建
                                 }
                             });
                         });

@@ -37,3 +37,5 @@ CREATE INDEX IF NOT EXISTS idx_friendships_status ON friendships(status);
 
 
 
+
+

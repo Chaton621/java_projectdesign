@@ -48,14 +48,12 @@ public class ChatService {
                     JsonUtil.toJsonNode("消息内容不能为空"));
             }
             
-            // 检查接收者是否存在
             User receiver = userDao.findById(receiverId);
             if (receiver == null) {
                 return Response.error(requestId, ErrorCode.NOT_FOUND, 
                     JsonUtil.toJsonNode("接收者不存在"));
             }
             
-            // 创建消息
             Message message = new Message();
             message.setSenderId(senderId);
             message.setReceiverId(receiverId);
@@ -63,7 +61,6 @@ public class ChatService {
             message.setStatus("UNREAD");
             message.setCreatedAt(LocalDateTime.now());
             
-            // 保存消息
             Long messageId = messageDao.insertMessage(message);
             
             logger.info("发送消息成功: messageId={}, senderId={}, receiverId={}", 
@@ -97,20 +94,15 @@ public class ChatService {
                     JsonUtil.toJsonNode("对方用户ID不能为空"));
             }
             
-            // 获取对话消息
             List<Message> messages = messageDao.getConversation(userId, otherUserId, limit, offset);
-            
-            // 标记对话为已读
             messageDao.markConversationAsRead(userId, otherUserId);
             
-            // 获取对方用户信息
             User otherUser = userDao.findById(otherUserId);
             if (otherUser == null) {
                 return Response.error(requestId, ErrorCode.NOT_FOUND, 
                     JsonUtil.toJsonNode("对方用户不存在"));
             }
             
-            // 构建响应
             ArrayNode messageArray = JsonUtil.getObjectMapper().createArrayNode();
             for (Message msg : messages) {
                 ObjectNode msgNode = JsonUtil.createObjectNode();
@@ -150,7 +142,6 @@ public class ChatService {
         try {
             List<Message> messages = messageDao.getRecentConversations(userId);
             
-            // 按用户分组，获取每个用户的最新消息
             Map<Long, Message> latestMessages = new LinkedHashMap<>();
             Map<Long, User> userMap = new HashMap<>();
             
@@ -167,7 +158,6 @@ public class ChatService {
                 }
             }
             
-            // 构建响应
             ArrayNode conversationArray = JsonUtil.getObjectMapper().createArrayNode();
             for (Map.Entry<Long, Message> entry : latestMessages.entrySet()) {
                 Long otherUserId = entry.getKey();

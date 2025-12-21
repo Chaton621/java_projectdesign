@@ -83,7 +83,6 @@ public class FineRateConfigInitializer {
         } catch (Exception e) {
             logger.error("初始化欠费价格梯度配置失败", e);
             // 不抛出异常，避免影响服务器启动
-            // 配置可以通过管理界面或SQL脚本手动设置
         }
     }
     
@@ -174,6 +173,8 @@ public class FineRateConfigInitializer {
         }
     }
 }
+
+
 
 
 

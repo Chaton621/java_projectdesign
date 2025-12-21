@@ -93,7 +93,7 @@ public class AdminHomeView {
             System.err.println("无法加载视频背景: " + e.getMessage());
         }
         
-        // 如果没有视频，使用默认背景
+        // 无视频时使用默认背景
         if (!videoLoaded) {
             backgroundPane.getStyleClass().add("main-container");
         }
@@ -439,7 +439,7 @@ public class AdminHomeView {
                     payload.put("totalCount", Integer.parseInt(totalCountField.getText()));
                     payload.put("availableCount", Integer.parseInt(totalCountField.getText()));
                     
-                    // 如果有选择封面，发送封面路径
+                    // 发送封面路径
                     if (coverImagePath.get() != null) {
                         payload.put("coverImagePath", coverImagePath.get());
                     }
@@ -565,7 +565,7 @@ public class AdminHomeView {
                     payload.put("totalCount", Integer.parseInt(totalCountField.getText()));
                     payload.put("availableCount", Integer.parseInt(availableCountField.getText()));
                     
-                    // 如果有选择封面，发送封面路径
+                    // 发送封面路径
                     if (coverImagePath.get() != null) {
                         payload.put("coverImagePath", coverImagePath.get());
                     }
@@ -679,8 +679,7 @@ public class AdminHomeView {
         try {
             String fileContent = new String(Files.readAllBytes(file.toPath()));
             
-            // 对于TXT文件，尝试按CSV格式解析（逗号分隔）
-            // 如果TXT文件不是CSV格式，可以按行解析，每行格式：isbn,title,author,category,publisher,description,totalCount
+            // TXT文件按CSV格式解析，每行格式：isbn,title,author,category,publisher,description,totalCount
             String content = fileContent;
             
             Request request = new Request();

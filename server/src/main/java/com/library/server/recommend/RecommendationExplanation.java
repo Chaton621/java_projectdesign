@@ -62,7 +62,7 @@ public class RecommendationExplanation {
         }
         
         private PathType type;
-        private Long sourceBookId;  // 源图书ID（如果是共借路径）
+        private Long sourceBookId;  // 源图书ID（共借路径）
         private String sourceBookTitle;
         private Long targetBookId;  // 目标图书ID
         private String targetBookTitle;
@@ -108,6 +108,8 @@ public class RecommendationExplanation {
         }
     }
 }
+
+
 
 
 

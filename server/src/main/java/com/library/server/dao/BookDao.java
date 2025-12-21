@@ -114,7 +114,6 @@ public class BookDao extends BaseDao {
      * @return 是否更新成功
      */
     public boolean updateBookStock(Connection conn, Long bookId, int delta) {
-        // 如果conn为null，自己管理连接和事务
         if (conn == null) {
             Connection ownConn = null;
             try {
@@ -141,7 +140,6 @@ public class BookDao extends BaseDao {
             }
         }
         
-        // conn不为null，在事务中使用
         try {
             return updateBookStockInternal(conn, bookId, delta);
         } catch (SQLException e) {

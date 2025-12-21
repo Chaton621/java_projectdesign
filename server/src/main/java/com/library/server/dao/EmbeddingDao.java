@@ -74,7 +74,7 @@ public class EmbeddingDao extends BaseDao {
             stmt.setLong(1, bookId);
             
             if (USE_PGVECTOR) {
-                // pgvector需要转换为字符串格式：'[1,2,3]'
+                // pgvector格式：'[1,2,3]'
                 stmt.setString(2, arrayToString(embedding));
                 stmt.setString(3, modelName);
                 stmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
@@ -158,7 +158,7 @@ public class EmbeddingDao extends BaseDao {
      * 从DB取部分向量，计算cosine相似度
      */
     private List<SimilarBook> querySimilarBooksWithCosine(float[] queryVector, int topK) {
-        // 获取所有向量（如果数据量大，可以限制数量）
+        // 获取向量数据（限制1000条）
         String sql = "SELECT book_id, embedding FROM book_embeddings LIMIT 1000";
         
         Connection conn = null;
