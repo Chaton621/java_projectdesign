@@ -30,3 +30,7 @@ public class GenerateUserPasswords {
         logger.info("UPDATE users SET password_hash = '{}' WHERE username LIKE 'user%';", passwordHash);
     }
 }
+
+
+
+

@@ -18,3 +18,7 @@ echo 正在启动服务器，端口: %PORT%
 call mvn -pl server compile exec:java -Dexec.mainClass="com.library.server.ServerMain" -Dexec.args="%PORT%" -Dexec.jvmArgs="-Dfile.encoding=UTF-8 -Dconsole.encoding=UTF-8"
 pause
 
+
+
+
+
