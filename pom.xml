@@ -9,6 +9,8 @@
     <artifactId>library-system</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
+    
+    <description>Library Management System - A comprehensive library management system with JavaFX client and Socket-based server, featuring book management, borrowing system, user management, AI recommendations, and chat functionality.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
