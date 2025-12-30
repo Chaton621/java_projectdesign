@@ -29,7 +29,12 @@ import javafx.stage.FileChooser;
 import java.net.URL;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.nio.file.Files;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /**
  * 管理员主界面
@@ -664,8 +669,9 @@ public class AdminHomeView {
     
     private void importBooks() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("选择文件（支持CSV/TXT）");
+        fileChooser.setTitle("选择文件（支持CSV/TXT/EXCEL）");
         fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Excel文件", "*.xlsx", "*.xls"),
                 new FileChooser.ExtensionFilter("CSV文件", "*.csv"),
                 new FileChooser.ExtensionFilter("文本文件", "*.txt"),
                 new FileChooser.ExtensionFilter("所有文件", "*.*")
@@ -677,17 +683,32 @@ public class AdminHomeView {
         }
         
         try {
-            String fileContent = new String(Files.readAllBytes(file.toPath()));
+            String fileName = file.getName().toLowerCase();
+            String content;
+            String fileType;
             
-            // TXT文件按CSV格式解析，每行格式：isbn,title,author,category,publisher,description,totalCount
-            String content = fileContent;
+            // 根据文件扩展名判断文件类型
+            if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
+                // 读取EXCEL文件并转换为CSV格式
+                content = readExcelFile(file);
+                fileType = "excel";
+            } else if (fileName.endsWith(".csv") || fileName.endsWith(".txt")) {
+                // 读取CSV/TXT文件
+                content = new String(Files.readAllBytes(file.toPath()), "UTF-8");
+                fileType = fileName.endsWith(".csv") ? "csv" : "txt";
+            } else {
+                // 默认按TXT处理
+                content = new String(Files.readAllBytes(file.toPath()), "UTF-8");
+                fileType = "txt";
+            }
             
             Request request = new Request();
             request.setRequestId(java.util.UUID.randomUUID().toString());
             request.setOpCode(OpCode.ADMIN_IMPORT_BOOKS);
             request.setToken(session.getToken());
             request.setPayload(JsonUtil.createObjectNode()
-                    .put("csvContent", content));
+                    .put("content", content)
+                    .put("fileType", fileType));
             
             Response response = client.send(request);
             if (response.isSuccess()) {
@@ -722,9 +743,117 @@ public class AdminHomeView {
                 }
             }
         } catch (Exception e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("导入失败");
+            errorAlert.setHeaderText(null);
+            errorAlert.setContentText("导入失败: " + e.getMessage());
+            errorAlert.showAndWait();
+            
             if (statusLabel != null) {
                 statusLabel.setText("导入失败: " + e.getMessage());
             }
+        }
+    }
+    
+    /**
+     * 读取EXCEL文件并转换为CSV格式字符串
+     * 格式：isbn,title,author,category,publisher,description,totalCount
+     */
+    private String readExcelFile(File file) throws Exception {
+        StringBuilder csvContent = new StringBuilder();
+        
+        try (FileInputStream fis = new FileInputStream(file);
+             Workbook workbook = file.getName().toLowerCase().endsWith(".xlsx") 
+                     ? new XSSFWorkbook(fis) 
+                     : new HSSFWorkbook(fis)) {
+            
+            Sheet sheet = workbook.getSheetAt(0); // 读取第一个工作表
+            
+            // 跳过表头（如果第一行是表头）
+            int startRow = 0;
+            Row firstRow = sheet.getRow(0);
+            if (firstRow != null) {
+                org.apache.poi.ss.usermodel.Cell firstCell = firstRow.getCell(0);
+                if (firstCell != null) {
+                    String firstCellValue = getCellValueAsString(firstCell);
+                    // 如果第一行第一列是"isbn"或"ISBN"等表头，则跳过
+                    if (firstCellValue != null && firstCellValue.toLowerCase().contains("isbn")) {
+                        startRow = 1;
+                    }
+                }
+            }
+            
+            // 读取数据行
+            for (int i = startRow; i <= sheet.getLastRowNum(); i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {
+                    continue;
+                }
+                
+                // 读取7列：isbn,title,author,category,publisher,description,totalCount
+                String[] values = new String[7];
+                for (int j = 0; j < 7 && j < row.getLastCellNum(); j++) {
+                    org.apache.poi.ss.usermodel.Cell cell = row.getCell(j);
+                    values[j] = getCellValueAsString(cell);
+                    if (values[j] == null) {
+                        values[j] = "";
+                    }
+                }
+                
+                // 如果第一列（ISBN）为空，跳过这一行
+                if (values[0] == null || values[0].trim().isEmpty()) {
+                    continue;
+                }
+                
+                // 构建CSV行
+                csvContent.append(String.join(",", values));
+                csvContent.append("\n");
+            }
+        }
+        
+        return csvContent.toString();
+    }
+    
+    /**
+     * 获取单元格的字符串值
+     */
+    private String getCellValueAsString(org.apache.poi.ss.usermodel.Cell cell) {
+        if (cell == null) {
+            return "";
+        }
+        
+        CellType cellType = cell.getCellType();
+        switch (cellType) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return cell.getDateCellValue().toString();
+                } else {
+                    // 对于数字，如果是整数则返回整数，否则返回小数
+                    double numericValue = cell.getNumericCellValue();
+                    if (numericValue == (long) numericValue) {
+                        return String.valueOf((long) numericValue);
+                    } else {
+                        return String.valueOf(numericValue);
+                    }
+                }
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            case FORMULA:
+                try {
+                    return cell.getStringCellValue();
+                } catch (Exception e) {
+                    try {
+                        return String.valueOf(cell.getNumericCellValue());
+                    } catch (Exception ex) {
+                        return "";
+                    }
+                }
+            case BLANK:
+                return "";
+            default:
+                return "";
         }
     }
     

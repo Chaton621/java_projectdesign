@@ -50,6 +50,36 @@ public class BookDao extends BaseDao {
     }
     
     /**
+     * 根据ISBN查找图书
+     */
+    public Book findByIsbn(String isbn) {
+        String sql = "SELECT id, isbn, title, author, category, publisher, description, " +
+                     "cover_image_path, total_count, available_count, created_at " +
+                     "FROM books WHERE isbn = ?";
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            conn = getConnection();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, isbn);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return mapResultSetToBook(rs);
+            }
+            return null;
+        } catch (SQLException e) {
+            logger.error("查找图书失败: isbn={}", isbn, e);
+            throw new RuntimeException("查找图书失败", e);
+        } finally {
+            close(conn, stmt, rs);
+        }
+    }
+    
+    /**
      * 搜索图书
      * @param keyword 关键词（标题、作者、ISBN）
      * @param category 分类

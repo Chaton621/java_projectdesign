@@ -225,7 +225,7 @@ public class RequestDispatcher {
             return Response.error(request.getRequestId(), ErrorCode.FORBIDDEN);
         }
         logger.info("处理管理员导入图书请求: requestId={}", request.getRequestId());
-        return Response.error(request.getRequestId(), ErrorCode.SERVER_ERROR, "NOT_IMPLEMENTED");
+        return bookService.importBooks(request);
     }
     
     private Response handleAdminUserFreeze(Request request) {

@@ -25,6 +25,7 @@
         <hikaricp.version>5.0.1</hikaricp.version>
         <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+        <poi.version>5.2.4</poi.version>
     </properties>
 
     <modules>
@@ -101,6 +102,18 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-media</artifactId>
                 <version>${javafx.version}</version>
+            </dependency>
+            
+            <!-- Apache POI for Excel support -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
